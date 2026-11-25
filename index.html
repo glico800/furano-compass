@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <!-- viewport-fit=cover：iPhoneのノッチ部分まで白背景を広げる -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>富良野コンパス</title>
+  <meta name="description" content="どこにいても富良野の方向がわかるコンパス。富良野以外の方角はわからない。">
+  <meta name="theme-color" content="#ffffff">
+
+  <!-- ===== OGP =====
+       ユーザー名やリポジトリ名を変えたら、下の3つのURLも直すこと
+       og:image は相対パスだとSNSが画像を拾えないので、必ず https:// から始まる絶対URLにする -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="富良野コンパス">
+  <meta property="og:title" content="富良野コンパス">
+  <meta property="og:description" content="どこにいても富良野の方向がわかるコンパス。富良野以外の方角はわからない。">
+  <meta property="og:url" content="https://glico800.github.io/furano-compass/">
+  <meta property="og:image" content="https://glico800.github.io/furano-compass/ogp.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="富良野コンパス：どこにいても富良野の方向がわかる">
+  <meta property="og:locale" content="ja_JP">
+  <!-- X（旧Twitter）用：大きい画像のカードで表示する -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="富良野コンパス">
+  <meta name="twitter:description" content="どこにいても富良野の方向がわかるコンパス。富良野以外の方角はわからない。">
+  <meta name="twitter:image" content="https://glico800.github.io/furano-compass/ogp.png">
+
+  <!-- アイコン類 -->
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===== スタート画面 ===== -->
+  <section id="start-screen" class="screen">
+    <!-- 富良野要素のワンポイント：ラーメン -->
+    <img class="ramen" src="ramen.svg" alt="" width="140" height="126">
+    <h1 class="title">富良野コンパス</h1>
+    <p class="subtitle">どこにいても富良野の方向がわかるよ！</p>
+    <button id="start-button" class="start-button" type="button">スタート</button>
+    <!-- 位置情報とセンサーを使う旨だけ小さく書いておく（許可ダイアログで驚かせないため） -->
+    <p class="note">位置情報と方位センサーを使います。</p>
+  </section>
+
+  <!-- ===== コンパス画面 ===== -->
+  <section id="compass-screen" class="screen" hidden>
+    <!-- 上の大きい文字：iOSのコンパスだと「302° 北西」が出るところ -->
+    <div id="readout" class="readout">…</div>
+
+    <div class="dial-wrap">
+      <!-- 上に固定されている三角（＝今スマホが向いている方向）。富良野を向くと赤くなる -->
+      <div id="pointer" class="pointer"></div>
+      <!-- 回転する文字盤。中身は main.js で生成する -->
+      <svg id="dial" class="dial" viewBox="-200 -200 400 400" aria-hidden="true"></svg>
+      <!-- 真ん中の十字 -->
+      <div class="crosshair"></div>
+    </div>
+
+    <!-- エラー時だけ表示するメッセージ -->
+    <p id="message" class="message" hidden></p>
+  </section>
+
+  <script src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 180">
+  <!-- 湯気 -->
+  <g fill="none" stroke="#c7c7cc" stroke-width="4" stroke-linecap="round">
+    <path d="M68 52 q-8 -10 0 -20 q8 -10 0 -20"/>
+    <path d="M98 46 q-8 -10 0 -20 q8 -10 0 -20"/>
+    <path d="M128 52 q-8 -10 0 -20 q8 -10 0 -20"/>
+  </g>
+
+  <!-- 海苔（スープに刺さっているので、スープより先に描く） -->
+  <rect x="130" y="58" width="26" height="36" fill="#1f3a2b" stroke="#222" stroke-width="2" transform="rotate(12 143 76)"/>
+
+  <!-- どんぶり：高台 → 本体 → 雷紋っぽいギザギザ -->
+  <path d="M72 160 h56 v9 h-56 z" fill="#d93a2f" stroke="#222" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M18 92 Q22 158 100 164 Q178 158 182 92 Z" fill="#d93a2f" stroke="#222" stroke-width="3" stroke-linejoin="round"/>
+  <polyline points="32,122 42,112 52,122 62,112 72,122 82,112 92,122 102,112 112,122 122,112 132,122 142,112 152,122 162,112 170,120"
+            fill="none" stroke="#fff" stroke-width="3" stroke-linejoin="round"/>
+
+  <!-- スープ -->
+  <ellipse cx="100" cy="92" rx="82" ry="18" fill="#e9b96e" stroke="#222" stroke-width="3"/>
+
+  <!-- 麺 -->
+  <g fill="none" stroke="#f9e07f" stroke-width="3" stroke-linecap="round">
+    <path d="M38 96 q8 -6 16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0"/>
+    <path d="M46 102 q8 -6 16 0 t16 0 t16 0 t16 0 t16 0 t16 0"/>
+  </g>
+
+  <!-- チャーシュー -->
+  <circle cx="68" cy="88" r="15" fill="#c98b5a" stroke="#7a4a2a" stroke-width="3"/>
+  <circle cx="68" cy="88" r="7" fill="#e8b98f"/>
+
+  <!-- 味玉 -->
+  <ellipse cx="108" cy="92" rx="13" ry="10" fill="#fff" stroke="#222" stroke-width="2"/>
+  <circle cx="108" cy="92" r="6" fill="#f2a516"/>
+
+  <!-- なると -->
+  <circle cx="140" cy="97" r="10" fill="#fff" stroke="#222" stroke-width="2"/>
+  <path d="M140 97 m-3 0 a3 3 0 1 1 3 3 a6 6 0 1 1 -6 -6" fill="none" stroke="#e85b8a" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- ねぎ -->
+  <g fill="#fff" stroke="#5aa746" stroke-width="2">
+    <circle cx="90" cy="83" r="3"/>
+    <circle cx="86" cy="101" r="3"/>
+    <circle cx="124" cy="83" r="3"/>
+    <circle cx="48" cy="100" r="3"/>
+    <circle cx="158" cy="90" r="3"/>
+  </g>
+
+  <!-- 箸 -->
+  <g stroke="#b5793c" stroke-width="5" stroke-linecap="round">
+    <line x1="160" y1="16" x2="102" y2="86"/>
+    <line x1="178" y1="24" x2="114" y2="88"/>
+  </g>
+</svg>
