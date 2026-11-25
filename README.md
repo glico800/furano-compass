@@ -36,3 +36,4 @@ GitHub Pages はファイルを10分間ブラウザにキャッシュさせる�
 
 - `index.html` / `style.css` / `main.js`
 - `ogp.png`（1200×630）/ `apple-touch-icon.png` / `favicon.svg` / `ramen.svg`
+- `qr.svg`：公開URLのQRコード（PCで開いた人向けの案内に使う）。URLを変えたら作り直すこと

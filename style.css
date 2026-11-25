@@ -92,6 +92,42 @@ body {
   font-size: 12px;
 }
 
+/* PCで開いたときだけ出る「スマホで開いてね」＋QRコード */
+.pc-notice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 24px 20px;
+  border: 2px dashed var(--accent);
+  border-radius: 16px;
+}
+
+/* hidden属性を display:flex で上書きしないように */
+.pc-notice[hidden] {
+  display: none;
+}
+
+.pc-notice-text {
+  color: var(--accent);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.qr {
+  width: 160px;
+  height: 160px;
+  image-rendering: pixelated; /* QRコードのドットをぼかさない */
+}
+
+/* QRコードが増えたぶん、背の低いPCの画面でも下まで見られるようにスクロール可にする */
+#start-screen {
+  height: 100dvh;
+  overflow-y: auto;
+  justify-content: safe center;
+}
+
 /* ---------- コンパス画面 ---------- */
 
 /* 上の大きい文字（「富良野」or「富良野じゃない」） */

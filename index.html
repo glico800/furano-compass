@@ -32,7 +32,7 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
   <!-- ?v= はキャッシュ対策。style.css / main.js を直したら、両方の数字を1つ上げること -->
-  <link rel="stylesheet" href="style.css?v=2">
+  <link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
 
@@ -42,6 +42,11 @@
     <img class="ramen" src="ramen.svg" alt="" width="140" height="126">
     <h1 class="title">富良野コンパス</h1>
     <p class="subtitle">どこにいても富良野の方向がわかるよ！</p>
+    <!-- PC（マウス操作の端末）で開いたときだけ出す案内。表示は main.js で切り替える -->
+    <div id="pc-notice" class="pc-notice" hidden>
+      <p class="pc-notice-text">このアプリはスマホ用だよ。<br>スマホで開いてね！</p>
+      <img class="qr" src="qr.svg" alt="富良野コンパスのURL（https://glico800.github.io/furano-compass/）のQRコード" width="160" height="160">
+    </div>
     <button id="start-button" class="start-button" type="button">スタート</button>
     <!-- 位置情報とセンサーを使う旨だけ小さく書いておく（許可ダイアログで驚かせないため） -->
     <p class="note">位置情報と方位センサーを使います。</p>
@@ -68,6 +73,6 @@
     <p id="message" class="message" hidden></p>
   </section>
 
-  <script src="main.js?v=2"></script>
+  <script src="main.js?v=3"></script>
 </body>
 </html>

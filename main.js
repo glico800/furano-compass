@@ -452,4 +452,21 @@ startButton.addEventListener('click', async () => {
   requestAnimationFrame(render);
 });
 
+// ==========================================================
+// PCで開いた人への案内
+// ==========================================================
+
+/**
+ * マウス操作の端末（＝たぶんPC）なら、スタート画面に「スマホで開いてね」とQRコードを出す。
+ * 機種名（User-Agent）ではなく「指で操作する画面かどうか」で判定する。
+ * ?debug のときはPCで試すためのモードなので出さない。
+ */
+function showPcNoticeIfNeeded() {
+  const isTouchScreen = window.matchMedia('(pointer: coarse)').matches;
+  if (!isTouchScreen && !isDebug) {
+    document.getElementById('pc-notice').hidden = false;
+  }
+}
+
 buildDial();
+showPcNoticeIfNeeded();
