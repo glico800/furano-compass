@@ -33,9 +33,10 @@ const SENSOR_TIMEOUT_MS = 3000;
 // ---------- 状態 ----------
 
 const state = {
-  heading: null,        // スマホが向いている方角（0〜360、北=0、時計回り）
-  furanoBearing: null,  // 現在地から見た富良野の方角（0〜360）
+  heading: null,        // スマホが向いている方角（0〜360、真北=0、時計回り）
+  furanoBearing: null,  // 現在地から見た富良野の方角（0〜360、真北基準）
   isHere: false,        // 富良野の中にいるかどうか
+  declination: 0,       // 現在地の偏角（磁北が真北から西に何度ずれているか）
   shownHeading: 0,      // 画面に表示中の角度（なめらかに動かすため、360を超えてもOK）
 };
 
@@ -154,6 +155,27 @@ function calcDistanceKm(from, to) {
   return 2 * R * Math.asin(Math.sqrt(a));
 }
 
+/**
+ * 偏角（度、西偏がプラス）。
+ * スマホの方位センサーは「磁北」基準、富良野の方角の計算は「真北」基準なので、
+ * そのままだと北海道で約9〜10°ずれる。その差を埋めるために使う。
+ *
+ * 国土地理院「磁気図2020.0年値」の偏角の近似式（日本国内向け）。
+ * 日本の外では式が当てはまらないので 0（補正しない）にする。
+ */
+function calcDeclination(lat, lon) {
+  if (lat < 20 || lat > 46 || lon < 122 || lon > 154) return 0;
+  const dφ = lat - 37;
+  const dλ = lon - 138;
+  const minutes = 7 * 60 + 40.585  // 7°40.585′
+    + 19.003 * dφ
+    - 6.666 * dλ
+    + 0.087 * dφ * dφ
+    + 0.993 * dφ * dλ
+    - 0.299 * dλ * dλ;
+  return minutes / 60;
+}
+
 // ==========================================================
 // 位置情報（GPS）
 // ==========================================================
@@ -170,6 +192,7 @@ function startGeolocation() {
       const here = { lat: pos.coords.latitude, lon: pos.coords.longitude };
       state.furanoBearing = calcBearing(here, FURANO);
       state.isHere = calcDistanceKm(here, FURANO) <= HERE_KM;
+      state.declination = calcDeclination(here.lat, here.lon);
 
       // 富良野の印を、計算した方角に回して表示する
       furanoGroup.setAttribute('transform', `rotate(${state.furanoBearing})`);
@@ -237,7 +260,9 @@ function startOrientation() {
     if (compass === null) return;
 
     gotEvent = true;
-    state.heading = normalize(compass + getScreenAngle());
+    // センサーの値は磁北基準なので、偏角を引いて真北基準に直す
+    // （日本は磁北が西にずれているので、磁北基準の値は真北基準より偏角ぶん大きく出る）
+    state.heading = normalize(compass + getScreenAngle() - state.declination);
   };
 
   // Android Chrome は deviceorientationabsolute のほうが北基準の値をくれる
