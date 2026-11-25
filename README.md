@@ -9,6 +9,12 @@ https://glico800.github.io/furano-compass/
 `main` ブランチの `(root)` をそのまま公開している。push すれば数分で反映される。
 ユーザー名やリポジトリ名を変える場合は、`index.html` のOGPの絶対URL（3か所）も直すこと。
 
+### キャッシュ対策
+
+GitHub Pages はファイルを10分間ブラウザにキャッシュさせる。
+`style.css` か `main.js` を直したら、`index.html` の `style.css?v=2` と `main.js?v=2` の数字を**両方**1つ上げてから push する。
+こうすると、ページが新しくなったときに CSS / JS も必ず新しいものが読み込まれ、新旧が混ざらない。
+
 ビルド不要。HTTPSじゃないと位置情報・方位センサーが動かないので、ローカル確認はPCの `?debug` で。
 
 ## PCでの動作確認
