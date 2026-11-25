@@ -48,6 +48,9 @@
 
   <!-- ===== コンパス画面 ===== -->
   <section id="compass-screen" class="screen" hidden>
+    <!-- 富良野を向いたときだけ出る集中線（画面いっぱい・文字盤の後ろ）。中身は main.js で描く -->
+    <svg id="focus-lines" class="focus-lines" aria-hidden="true"><path></path></svg>
+
     <!-- 上の大きい文字：iOSのコンパスだと「302° 北西」が出るところ -->
     <div id="readout" class="readout">…</div>
 

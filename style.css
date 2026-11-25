@@ -96,21 +96,48 @@ body {
 
 /* 上の大きい文字（「富良野」or「富良野じゃない」） */
 .readout {
+  position: relative; /* 集中線より手前に出す */
+  z-index: 1;
   min-height: 1.4em;
   font-size: 44px;
   font-weight: 200;
   letter-spacing: 0.04em;
-  transition: color 0.2s;
+  transition: color 0.2s, transform 0.15s;
+  /* 集中線が文字に重なっても読めるように、白いフチをつける */
+  text-shadow: 0 0 4px var(--bg), 0 0 8px var(--bg), 0 0 12px var(--bg);
 }
 
-/* 富良野を向いているとき */
+/* 富良野を向いているとき：太く、ちょっと大きく */
 .readout.is-furano {
-  font-weight: 400;
+  font-weight: 700;
+  transform: scale(1.15);
+}
+
+/* ---------- 集中線 ---------- */
+
+/* 画面いっぱいに固定。ふだんは透明で、富良野を向いたときだけ出す */
+.focus-lines {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.focus-lines.is-on {
+  opacity: 1;
+}
+
+.focus-lines path {
+  fill: var(--fg);
 }
 
 /* 文字盤の外枠。画面幅に合わせて正方形 */
 .dial-wrap {
   position: relative;
+  z-index: 1; /* 集中線より手前 */
   /* 目盛りの外側に文字を書くぶん、少し大きめにとる */
   width: min(94vw, 460px);
   aspect-ratio: 1 / 1;
@@ -219,6 +246,8 @@ body {
 
 /* エラーメッセージ */
 .message {
+  position: relative; /* 集中線より手前 */
+  z-index: 1;
   color: var(--dim);
   font-size: 14px;
   line-height: 1.6;

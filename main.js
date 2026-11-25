@@ -302,9 +302,11 @@ function render() {
 function updateReadout() {
   let text;
   let isFurano = false;
+  let isFacing = false; // 実際に富良野の方角を向いているか（集中線を出すかどうか）
 
   if (state.isHere) {
     // 富良野の中にいるなら、どっちを向いても富良野
+    // （ずっと集中線が出っぱなしになるので、ここでは出さない）
     text = 'ここが富良野';
     isFurano = true;
   } else if (state.heading === null || state.furanoBearing === null) {
@@ -313,6 +315,7 @@ function updateReadout() {
   } else if (Math.abs(angleDiff(state.heading, state.furanoBearing)) <= TOLERANCE_DEG) {
     text = '富良野';
     isFurano = true;
+    isFacing = true;
   } else {
     text = '富良野じゃない';
   }
@@ -323,6 +326,79 @@ function updateReadout() {
   }
   readout.classList.toggle('is-furano', isFurano);
   pointer.classList.toggle('is-furano', isFurano);
+  setFocusLines(isFacing);
+}
+
+// ==========================================================
+// 集中線（富良野を向いたときだけ出る演出）
+// ==========================================================
+
+// 線の本数
+const FOCUS_LINE_COUNT = 120;
+// 線を描き直す間隔（ミリ秒）。毎回ランダムに描き直して、マンガっぽくチラつかせる
+const FOCUS_REDRAW_MS = 90;
+
+const focusLines = document.getElementById('focus-lines');
+const focusPath = focusLines.querySelector('path');
+const dialWrap = document.querySelector('.dial-wrap');
+// 「動きを減らす」設定の人には、チラつかせない（描くのは1回だけ）
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+let focusOn = false;
+let focusTimer = null;
+
+/**
+ * 文字盤の中心に向かって、細長い三角形をたくさん描く。
+ * 三角形の太いほうは画面の外、とがったほうは文字盤のすぐ外側。
+ */
+function drawFocusLines() {
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  const rect = dialWrap.getBoundingClientRect();
+  const cx = rect.left + rect.width / 2;
+  const cy = rect.top + rect.height / 2;
+  // とがった先は、文字盤（＋上の三角）にかからないくらいの位置から
+  const innerMin = (rect.width / 2) * 1.12;
+  // 太いほうは画面の外まで伸ばす
+  const outer = Math.hypot(w, h);
+
+  let d = '';
+  for (let i = 0; i < FOCUS_LINE_COUNT; i++) {
+    // だいたい等間隔に、少しだけばらつかせる
+    const angle = ((i + Math.random() * 0.8) / FOCUS_LINE_COUNT) * Math.PI * 2;
+    // 先端の位置：長い線と短い線を混ぜる
+    const tip = innerMin * (1 + Math.random() * 0.45);
+    // 画面の外での太さ（px）を、角度の幅に直す
+    const halfWidth = (4 + Math.random() * 22) / 2 / outer;
+
+    const x1 = cx + Math.cos(angle - halfWidth) * outer;
+    const y1 = cy + Math.sin(angle - halfWidth) * outer;
+    const x2 = cx + Math.cos(angle + halfWidth) * outer;
+    const y2 = cy + Math.sin(angle + halfWidth) * outer;
+    const x3 = cx + Math.cos(angle) * tip;
+    const y3 = cy + Math.sin(angle) * tip;
+    d += `M${x1.toFixed(1)} ${y1.toFixed(1)}L${x2.toFixed(1)} ${y2.toFixed(1)}L${x3.toFixed(1)} ${y3.toFixed(1)}Z`;
+  }
+
+  focusLines.setAttribute('viewBox', `0 0 ${w} ${h}`);
+  focusPath.setAttribute('d', d);
+}
+
+/** 集中線を出す／消す。状態が変わったときだけ動く */
+function setFocusLines(on) {
+  if (on === focusOn) return;
+  focusOn = on;
+
+  focusLines.classList.toggle('is-on', on);
+  clearInterval(focusTimer);
+  focusTimer = null;
+
+  if (on) {
+    drawFocusLines();
+    if (!reduceMotion) {
+      focusTimer = setInterval(drawFocusLines, FOCUS_REDRAW_MS);
+    }
+  }
 }
 
 // ==========================================================
